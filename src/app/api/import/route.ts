@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { parseXlsx } from "@/lib/xlsx-parser";
+import { parseCsv } from "@/lib/csv-parser";
 
 export async function POST(request: NextRequest) {
   let formData: FormData;
@@ -16,22 +16,22 @@ export async function POST(request: NextRequest) {
   }
 
   const fileName = file instanceof File ? file.name : "";
-  if (!fileName.match(/\.(xlsx|xls)$/i)) {
+  if (!fileName.match(/\.csv$/i)) {
     return NextResponse.json(
-      { error: "Only .xlsx or .xls files are accepted." },
+      { error: "Only .csv files are accepted." },
       { status: 400 }
     );
   }
 
   const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
+  const text = new TextDecoder("utf-8").decode(arrayBuffer);
 
   let parseResult;
   try {
-    parseResult = parseXlsx(buffer);
+    parseResult = parseCsv(text);
   } catch {
     return NextResponse.json(
-      { error: "Failed to parse the file. Ensure it is a valid Excel file." },
+      { error: "Failed to parse the file. Ensure it is a valid CSV file." },
       { status: 400 }
     );
   }

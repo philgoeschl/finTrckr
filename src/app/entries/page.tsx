@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { TopBar } from "@/components/layout/TopBar";
 import { EntryTable } from "@/components/entries/EntryTable";
 import { EntryDialog } from "@/components/entries/EntryDialog";
-import { useEntries, createEntry, importXlsx, exportCsv } from "@/hooks/useEntries";
+import { useEntries, createEntry, importCsv, exportCsv } from "@/hooks/useEntries";
 import { EntryInput } from "@/lib/validations";
 import { toast } from "sonner";
 
@@ -30,7 +30,7 @@ export default function EntriesPage() {
     if (!file) return;
     e.target.value = "";
     try {
-      const result = await importXlsx(file);
+      const result = await importCsv(file);
       if (result.errors.length > 0) {
         toast.warning(
           `Imported ${result.imported} rows. ${result.errors.length} row(s) had errors.`
@@ -48,13 +48,13 @@ export default function EntriesPage() {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".xlsx,.xls"
+        accept=".csv"
         className="hidden"
         onChange={handleImport}
       />
       <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
         <Upload className="mr-1.5 h-4 w-4" />
-        Import XLSX
+        Import CSV
       </Button>
       <Button variant="outline" size="sm" onClick={exportCsv}>
         <Download className="mr-1.5 h-4 w-4" />

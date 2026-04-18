@@ -50,7 +50,7 @@ export async function deleteEntry(id: string): Promise<void> {
   await mutate(ENTRIES_KEY);
 }
 
-export async function importXlsx(file: File): Promise<ImportResult> {
+export async function importCsv(file: File): Promise<ImportResult> {
   const formData = new FormData();
   formData.append("file", file);
   const res = await fetch("/api/import", { method: "POST", body: formData });
