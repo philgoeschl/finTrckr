@@ -68,19 +68,24 @@ npm run test:coverage  # with coverage report
 
 ---
 
-## Deployment (Docker Compose)
+## Deployment
 
-### 1. Copy env file and set password
-
-```bash
-cp .env.example .env
-# Edit .env — set a strong POSTGRES_PASSWORD
-```
-
-### 2. Build and start
+### Server prerequisites (one-time)
 
 ```bash
-docker compose up -d --build
+# Install Docker + Compose plugin (Debian/Ubuntu)
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER   # re-login after this
+
+# Clone the repo
+git clone https://github.com/philgoeschl/finTrckr.git /opt/fintrckr
+cd /opt/fintrckr
+
+# Create .env with a strong production password
+echo "POSTGRES_PASSWORD=$(openssl rand -base64 32 | tr -d /=+ | head -c 32)" > .env
+
+# First deploy
+docker compose up --build -d
 ```
 
 This will:
@@ -89,20 +94,25 @@ This will:
 3. Run `prisma migrate deploy` on first boot
 4. Serve the app at `http://<server-ip>:3000`
 
-### 3. Updates
+Data is stored in the `fintrckr_pgdata` Docker volume — it survives restarts and rebuilds.
+
+### Deploying updates
+
+From your local machine:
 
 ```bash
-docker compose up -d --build
+./deploy.sh user@yourserver
 ```
 
-Data is stored in the `fintrckr_pgdata` Docker volume and survives container restarts and rebuilds.
+This SSHes into the server, pulls the latest commits, rebuilds the image, and restarts the stack. The script accepts the remote host as its first argument (defaults to `user@yourserver`) and an optional second argument for the remote path (defaults to `/opt/fintrckr`).
 
-### Stop / Start
+### Stop / Start / Wipe
 
 ```bash
-docker compose down        # stop (data kept)
-docker compose down -v     # stop AND delete all data
-docker compose up -d       # restart without rebuild
+# Run on the server, or prefix with: ssh user@server "cd /opt/fintrckr && ..."
+docker compose down         # stop (data kept)
+docker compose down -v      # stop AND delete all data
+docker compose up -d        # restart without rebuild
 ```
 
 ---
@@ -113,7 +123,7 @@ docker compose up -d       # restart without rebuild
 
 1. Open the app on Sunday after reviewing your portfolio.
 2. Go to **Entries** → **Add Entry**.
-3. Fill in: Date, Capital (current portfolio value including unrealised gain), Gain (EUR), Gain %, Free Cash (uninvested cash in your brokerage account), and an optional comment. Total is derived automatically as Capital + Free Cash.
+3. Fill in the required fields (marked *): **Date**, **Capital** (current portfolio value including unrealised gain; can be negative for leveraged/borrowed positions), **Gain (EUR)**, **Gain %**. Optionally add **Free Cash** (uninvested cash; must be ≥ 0) and a comment. Total is derived automatically as Capital + Free Cash.
 4. Click **Add Entry**. The dashboard will immediately reflect the new values.
 
 ### Importing historical data
@@ -171,8 +181,8 @@ Visit **Charts** to see:
 |-------|-------------|
 | Date | The Sunday of the weekly check-in |
 | Total | Total assets in EUR — derived as Capital + Free Cash |
-| Capital | Current portfolio value in EUR (includes unrealised gain) |
-| Gain | Unrealised gain in EUR (already reflected in Capital; can be negative) |
-| Gain % | Gain as a percentage of capital |
-| Free Cash | Uninvested cash in the brokerage account (optional) |
+| Capital | Current portfolio value in EUR (includes unrealised gain); negative for leveraged/borrowed positions. Required. |
+| Gain | Unrealised gain in EUR (already reflected in Capital; can be negative). Required. |
+| Gain % | Gain as a percentage of capital. Required. |
+| Free Cash | Uninvested cash in the brokerage account; must be ≥ 0 (optional) |
 | Comment | Any notes for that week |
