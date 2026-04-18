@@ -14,7 +14,7 @@ export interface Entry {
 
 export interface EntryInput {
   date: string;
-  total: number;
+  total?: number | null;
   capital: number;
   gain: number;
   gainPct: number;

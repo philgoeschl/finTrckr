@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       await prisma.entry.upsert({
         where: { date: new Date(data.date) },
         update: {
-          total: data.total,
+          total: data.total ?? (Number(data.capital) + Number(data.freeCash ?? 0)),
           capital: data.capital,
           gain: data.gain,
           gainPct: data.gainPct,
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
         },
         create: {
           date: new Date(data.date),
-          total: data.total,
+          total: data.total ?? (Number(data.capital) + Number(data.freeCash ?? 0)),
           capital: data.capital,
           gain: data.gain,
           gainPct: data.gainPct,
