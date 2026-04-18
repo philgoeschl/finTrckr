@@ -1,15 +1,30 @@
 import { z } from "zod";
 
+function requireNumber(msg: string) {
+  return z.preprocess(
+    (v) => (v === "" || v == null ? undefined : v),
+    z.coerce.number({ invalid_type_error: msg }).finite(msg)
+  );
+}
+
+function optionalNumber(msg: string) {
+  return z.preprocess(
+    (v) => (v === "" || v == null ? null : v),
+    z.coerce.number({ invalid_type_error: msg }).finite(msg).nullable().optional()
+  );
+}
+
 export const entryInputSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD"),
-  total: z.coerce.number({ invalid_type_error: "Total must be a number" }).optional().nullable(),
-  capital: z.coerce.number({ invalid_type_error: "Invested cash must be a number" }).optional().nullable(),
-  gain: z.coerce.number({ invalid_type_error: "Gain must be a number" }),
-  gainPct: z.coerce.number({ invalid_type_error: "Gain % must be a number" }),
-  freeCash: z.coerce
-    .number({ invalid_type_error: "Free cash must be a number" })
-    .optional()
-    .nullable(),
+  capital: requireNumber("Capital is required").pipe(
+    z.number().positive("Capital must be greater than 0")
+  ),
+  gain: requireNumber("Gain is required"),
+  gainPct: requireNumber("Gain % is required"),
+  freeCash: optionalNumber("Free cash must be a number").pipe(
+    z.number().nonnegative("Free cash cannot be negative").nullable().optional()
+  ),
+  total: optionalNumber("Total must be a number"),
   comment: z.string().max(2000).optional().nullable(),
 });
 

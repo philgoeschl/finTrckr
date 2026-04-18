@@ -15,10 +15,10 @@ describe("parseCsv", () => {
     expect(result.rows[0].data.comment).toBe("First week");
   });
 
-  it("handles missing Free Cash column gracefully (freeCash is undefined)", () => {
+  it("handles missing Free Cash column gracefully (freeCash is null)", () => {
     const result = parseCsv(`${HC}\n2024-01-07;10000;8000;2000;25;no free cash col`);
     expect(result.errors).toHaveLength(0);
-    expect(result.rows[0].data.freeCash).toBeUndefined();
+    expect(result.rows[0].data.freeCash).toBeNull();
   });
 
   it("parses Free Cash column when present", () => {
@@ -50,11 +50,11 @@ describe("parseCsv", () => {
     expect(result.errors[0].message).toMatch(/date/i);
   });
 
-  it("recovers non-numeric Total by deriving it from capital + gain", () => {
+  it("recovers non-numeric Total by deriving it from capital + freeCash", () => {
     const result = parseCsv(`${HC}\n2024-01-07;not-a-number;8000;2000;25;bad total`);
     expect(result.errors).toHaveLength(0);
     expect(result.rows).toHaveLength(1);
-    expect(result.rows[0].data.total).toBe(10000); // 8000 + 2000
+    expect(result.rows[0].data.total).toBe(8000); // 8000 + 0 (no freeCash)
   });
 
   it("returns empty result for a CSV with only headers", () => {

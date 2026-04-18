@@ -33,7 +33,7 @@ describe("parseXlsx", () => {
     ]);
     const result = parseXlsx(buf);
     expect(result.errors).toHaveLength(0);
-    expect(result.rows[0].data.freeCash).toBeUndefined();
+    expect(result.rows[0].data.freeCash).toBeNull();
   });
 
   it("parses Free Cash column when present", () => {

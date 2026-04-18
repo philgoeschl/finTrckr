@@ -56,25 +56,25 @@ export function EntryForm({ initial, onSubmit, onCancel, isSubmitting }: EntryFo
     <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1">
-          <Label htmlFor="date">Date</Label>
+          <Label htmlFor="date">Date *</Label>
           <Input id="date" type="date" {...register("date")} />
           {errors.date && <p className="text-xs text-destructive">{errors.date.message}</p>}
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="capital">Invested Cash (EUR)</Label>
+          <Label htmlFor="capital">Capital (EUR) *</Label>
           <Input id="capital" type="number" step="0.01" {...register("capital")} />
           {errors.capital && <p className="text-xs text-destructive">{errors.capital.message}</p>}
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="gain">Gain (EUR)</Label>
+          <Label htmlFor="gain">Gain (EUR) *</Label>
           <Input id="gain" type="number" step="0.01" {...register("gain")} />
           {errors.gain && <p className="text-xs text-destructive">{errors.gain.message}</p>}
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="gainPct">Gain (%)</Label>
+          <Label htmlFor="gainPct">Gain (%) *</Label>
           <Input id="gainPct" type="number" step="0.0001" {...register("gainPct")} />
           {errors.gainPct && <p className="text-xs text-destructive">{errors.gainPct.message}</p>}
         </div>

@@ -78,4 +78,65 @@ describe("entryInputSchema", () => {
     const result = entryInputSchema.safeParse({ ...validEntry, gainPct: 500 });
     expect(result.success).toBe(true);
   });
+
+  describe("required field enforcement", () => {
+    it("rejects blank capital (empty string)", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, capital: "" });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects missing capital", () => {
+      const { capital: _, ...noCapital } = validEntry;
+      const result = entryInputSchema.safeParse(noCapital);
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects blank gain (empty string)", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, gain: "" });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects blank gainPct (empty string)", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, gainPct: "" });
+      expect(result.success).toBe(false);
+    });
+
+    it("accepts gain of 0 (break-even week)", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, gain: 0, gainPct: 0 });
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts gainPct of 0", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, gainPct: 0 });
+      expect(result.success).toBe(true);
+    });
+  });
+
+  describe("range constraints", () => {
+    it("rejects capital of 0", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, capital: 0 });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects negative capital", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, capital: -500 });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects negative freeCash", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, freeCash: -100 });
+      expect(result.success).toBe(false);
+    });
+
+    it("accepts freeCash of 0", () => {
+      const result = entryInputSchema.safeParse({ ...validEntry, freeCash: 0 });
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts missing freeCash (optional)", () => {
+      const { freeCash: _, ...noFreeCash } = validEntry;
+      const result = entryInputSchema.safeParse(noFreeCash);
+      expect(result.success).toBe(true);
+    });
+  });
 });
