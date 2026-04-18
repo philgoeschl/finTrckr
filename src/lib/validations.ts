@@ -16,9 +16,7 @@ function optionalNumber(msg: string) {
 
 export const entryInputSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD"),
-  capital: requireNumber("Capital is required").pipe(
-    z.number().positive("Capital must be greater than 0")
-  ),
+  capital: requireNumber("Capital is required"),
   gain: requireNumber("Gain is required"),
   gainPct: requireNumber("Gain % is required"),
   freeCash: optionalNumber("Free cash must be a number").pipe(

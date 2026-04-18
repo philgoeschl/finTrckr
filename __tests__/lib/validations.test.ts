@@ -113,14 +113,14 @@ describe("entryInputSchema", () => {
   });
 
   describe("range constraints", () => {
-    it("rejects capital of 0", () => {
+    it("accepts capital of 0", () => {
       const result = entryInputSchema.safeParse({ ...validEntry, capital: 0 });
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
     });
 
-    it("rejects negative capital", () => {
+    it("accepts negative capital (leveraged / borrowed position)", () => {
       const result = entryInputSchema.safeParse({ ...validEntry, capital: -500 });
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
     });
 
     it("rejects negative freeCash", () => {
