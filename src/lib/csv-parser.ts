@@ -4,6 +4,7 @@ import { entryInputSchema, EntryInput } from "./validations";
 const COLUMN_MAP: Record<string, keyof EntryInput> = {
   date: "date",
   total: "total",
+  "invested cash": "capital",
   "capital w/o gain": "capital",
   capital: "capital",
   gain: "gain",
@@ -110,7 +111,7 @@ export function parseCsv(text: string): ParseResult {
     for (const field of ["total", "capital", "gain", "gainPct", "freeCash"] as const) {
       if (field in mapped) {
         const num = toNumber(mapped[field]);
-        if (num === null && field !== "freeCash") {
+        if (num === null && field !== "freeCash" && field !== "total" && field !== "capital") {
           errors.push({
             rowIndex: i + 1,
             message: `Invalid value for "${field}": "${mapped[field]}"`,
@@ -119,6 +120,15 @@ export function parseCsv(text: string): ParseResult {
           continue;
         }
         mapped[field] = num;
+      }
+    }
+
+    // Derive total from capital + gain when not provided in CSV
+    if (!("total" in mapped) || mapped["total"] === null) {
+      const cap = mapped["capital"] as number | null;
+      const gn = mapped["gain"] as number | null;
+      if (cap !== null && gn !== null) {
+        mapped["total"] = cap + gn;
       }
     }
 

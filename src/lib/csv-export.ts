@@ -26,12 +26,11 @@ export function entriesToCsv(entries: EntryRow[]): string {
       typeof e.date === "string"
         ? e.date.slice(0, 10)
         : (e.date as Date).toISOString().slice(0, 10),
-    Total: toNum(e.total),
-    "Capital w/o Gain": toNum(e.capital),
+    "Invested Cash": toNum(e.capital),
+    "Free Cash":
+      e.freeCash !== null && e.freeCash !== undefined ? toNum(e.freeCash) : 0,
     Gain: toNum(e.gain),
     "Gain in %": toNum(e.gainPct),
-    "Free Cash":
-      e.freeCash !== null && e.freeCash !== undefined ? toNum(e.freeCash) : "",
     Comment: e.comment ?? "",
   }));
 

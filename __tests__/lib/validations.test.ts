@@ -50,10 +50,10 @@ describe("entryInputSchema", () => {
     expect(result.success).toBe(false);
   });
 
-  it("rejects missing total", () => {
+  it("accepts missing total (derived from capital + gain)", () => {
     const { total: _, ...noTotal } = validEntry;
     const result = entryInputSchema.safeParse(noTotal);
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
   });
 
   it("coerces string numbers", () => {

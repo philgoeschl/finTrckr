@@ -18,7 +18,7 @@ describe("entriesToCsv", () => {
     const lines = csv.split("\r\n").filter(Boolean);
     expect(lines).toHaveLength(2);
     expect(lines[0]).toContain("Date");
-    expect(lines[0]).toContain("Total");
+    expect(lines[0]).toContain("Invested Cash");
     expect(lines[0]).toContain("Gain in %");
   });
 
@@ -27,13 +27,12 @@ describe("entriesToCsv", () => {
     expect(csv).toContain("2024-01-07");
   });
 
-  it("outputs null freeCash as empty string", () => {
+  it("outputs null freeCash as 0", () => {
     const csv = entriesToCsv([{ ...baseEntry, freeCash: null }]);
-    // Free Cash column should be empty, not "null"
     expect(csv).not.toContain("null");
-    // The data row should contain two consecutive commas (empty field)
     const lines = csv.split("\r\n");
-    expect(lines[1]).toContain(",,");
+    // Free Cash column should contain 0, not empty
+    expect(lines[1]).toContain(",0,");
   });
 
   it("wraps comment with special characters in quotes", () => {

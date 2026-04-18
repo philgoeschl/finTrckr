@@ -50,10 +50,11 @@ describe("parseCsv", () => {
     expect(result.errors[0].message).toMatch(/date/i);
   });
 
-  it("adds non-numeric Total rows to errors", () => {
+  it("recovers non-numeric Total by deriving it from capital + gain", () => {
     const result = parseCsv(`${HC}\n2024-01-07;not-a-number;8000;2000;25;bad total`);
-    expect(result.rows).toHaveLength(0);
-    expect(result.errors.length).toBeGreaterThan(0);
+    expect(result.errors).toHaveLength(0);
+    expect(result.rows).toHaveLength(1);
+    expect(result.rows[0].data.total).toBe(10000); // 8000 + 2000
   });
 
   it("returns empty result for a CSV with only headers", () => {

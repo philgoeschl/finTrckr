@@ -29,7 +29,6 @@ export function EntryForm({ initial, onSubmit, onCancel, isSubmitting }: EntryFo
     defaultValues: initial
       ? {
           date: String(initial.date).slice(0, 10),
-          total: initial.total,
           capital: initial.capital,
           gain: initial.gain,
           gainPct: initial.gainPct,
@@ -43,7 +42,6 @@ export function EntryForm({ initial, onSubmit, onCancel, isSubmitting }: EntryFo
     if (initial) {
       reset({
         date: String(initial.date).slice(0, 10),
-        total: initial.total,
         capital: initial.capital,
         gain: initial.gain,
         gainPct: initial.gainPct,
@@ -64,13 +62,7 @@ export function EntryForm({ initial, onSubmit, onCancel, isSubmitting }: EntryFo
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="total">Total (EUR)</Label>
-          <Input id="total" type="number" step="0.01" {...register("total")} />
-          {errors.total && <p className="text-xs text-destructive">{errors.total.message}</p>}
-        </div>
-
-        <div className="space-y-1">
-          <Label htmlFor="capital">Capital w/o Gain (EUR)</Label>
+          <Label htmlFor="capital">Invested Cash (EUR)</Label>
           <Input id="capital" type="number" step="0.01" {...register("capital")} />
           {errors.capital && <p className="text-xs text-destructive">{errors.capital.message}</p>}
         </div>
