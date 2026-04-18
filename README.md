@@ -9,7 +9,7 @@ Personal weekly portfolio tracker. Record your stock/ETF portfolio value every S
 - **Dashboard** — KPI cards (portfolio value, gain, week-over-week delta, free cash) with a sparkline
 - **Entries** — Interactive table with add, edit, and delete; sorted by date
 - **Charts** — Portfolio value vs capital, gain in EUR, and gain % over time
-- **XLSX import** — Bulk-import historical data from an Excel file
+- **CSV import** — Bulk-import historical data from a semicolon-delimited CSV file
 - **CSV export** — Download all data for use in Excel
 
 ---
@@ -118,16 +118,34 @@ docker compose up -d       # restart without rebuild
 
 ### Importing historical data
 
-Prepare an Excel file (`.xlsx`) with these columns (header names are case-insensitive):
+Prepare a `.csv` file with `;` as the delimiter and these columns (header names are case-insensitive):
 
 | Date | Total | Capital w/o Gain | Gain | Gain in % | Comment |
 |------|-------|-----------------|------|-----------|---------|
 
-- `Free Cash` column is optional.
-- Dates can be in `YYYY-MM-DD`, `DD.MM.YYYY`, or Excel serial format.
+- `Free Cash` and `Comment` columns are optional.
+- Dates can be in `YYYY-MM-DD` or `DD.MM.YYYY` format.
+- Numeric values can include a currency prefix and thousands separator (e.g. `€ 8,751.00`, `-€ 286.91`, `10.71%`).
 - Re-importing a file is safe — rows with an existing date are updated, not duplicated.
 
-Go to **Entries** → **Import XLSX**, select your file. A summary toast shows how many rows were imported and if any had errors.
+Go to **Entries** → **Import CSV**, select your file. A summary toast shows how many rows were imported and if any had errors.
+
+#### Sample data
+
+`sample-data.csv` in the project root contains 21 weekly entries (Jan–May 2024) with deposits, corrections, a withdrawal, and a sell-off — ready to import for a quick dev/demo setup:
+
+```bash
+# With the app running, import via the UI:
+# Entries → Import CSV → select sample-data.csv
+```
+
+Example rows:
+```
+Date;Total;Capital w/o Gain;Gain;Gain in %;Comment
+07.01.2024;€ 6,150.75;€ 6,000.50;€ 150.25;2.50%;
+21.01.2024;€ 5,910.20;€ 6,000.50;-€ 90.30;-1.51%;small correction
+19.05.2024;€ 8,405.50;€ 7,500.00;€ 905.50;12.07%;withdrawal of € 500
+```
 
 ### Editing or deleting an entry
 
