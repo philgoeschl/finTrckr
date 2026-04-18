@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Entry {
+  id        String   @id @default(cuid())
+  date      DateTime @db.Date
+  total     Decimal  @db.Decimal(12, 2)
+  capital   Decimal  @db.Decimal(12, 2)
+  gain      Decimal  @db.Decimal(12, 2)
+  gainPct   Decimal  @db.Decimal(8, 4)
+  freeCash  Decimal? @db.Decimal(12, 2)
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String?
+
+  @@unique([date])
+  @@index([date])
+  @@index([userId])
+  @@map("entries")
+}
+
+// Future user management — uncomment and run migration when auth is added:
+// model User {
+//   id        String   @id @default(cuid())
+//   email     String   @unique
+//   name      String?
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   @@map("users")
+// }
+// Then add to Entry: user User? @relation(fields: [userId], references: [id])
+// And change userId to: userId String? @relation reference
