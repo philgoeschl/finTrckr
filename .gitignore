@@ -26,6 +26,7 @@ coverage/
 # misc
 .DS_Store
 *.pem
+tsconfig.tsbuildinfo
 
 # prisma
 prisma/*.db
