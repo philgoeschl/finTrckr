@@ -19,51 +19,42 @@ Personal weekly portfolio tracker. Record your stock/ETF portfolio value every S
 ### Prerequisites
 
 - Node.js 22+
-- Docker + Docker Compose
+- Docker + Docker Compose (see [`install-docker.sh`](install-docker.sh) for a one-shot installer on Linux Mint / Ubuntu)
 
-### 1. Clone and install
+### Quick start
 
 ```bash
 git clone https://github.com/philgoeschl/finTrckr.git
 cd finTrckr
-npm install
+./dev-setup.sh
 ```
 
-### 2. Configure environment
+`dev-setup.sh` does everything in one shot:
+
+1. Creates `.env` with dev defaults if it doesn't exist
+2. Starts the Postgres container (port 5432)
+3. Waits for the DB to be healthy
+4. Installs `node_modules` if needed
+5. Runs `prisma migrate dev`
+6. Starts the Next.js dev server at [http://localhost:3000](http://localhost:3000)
+
+### Manual steps (optional)
+
+If you prefer to run steps individually:
 
 ```bash
 cp .env.example .env
-```
+# Set DATABASE_URL=postgresql://fintrckr:devpassword@localhost:5432/fintrckr
 
-For local development with the Compose database, set in `.env`:
-```
-DATABASE_URL=postgresql://fintrckr:devpassword@localhost:5432/fintrckr
-```
-
-### 3. Start the database
-
-```bash
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up db -d
-```
-
-### 4. Run migrations
-
-```bash
 npx prisma migrate dev
+npm run dev
 ```
 
 To inspect data visually:
 ```bash
 npx prisma studio
 ```
-
-### 5. Start the dev server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
