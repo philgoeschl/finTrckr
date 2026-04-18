@@ -123,12 +123,12 @@ export function parseCsv(text: string): ParseResult {
       }
     }
 
-    // Derive total from capital + gain when not provided in CSV
+    // Derive total from capital + freeCash when not provided in CSV
     if (!("total" in mapped) || mapped["total"] === null) {
       const cap = mapped["capital"] as number | null;
-      const gn = mapped["gain"] as number | null;
-      if (cap !== null && gn !== null) {
-        mapped["total"] = cap + gn;
+      const fc = mapped["freeCash"] as number | null;
+      if (cap !== null) {
+        mapped["total"] = cap + (fc ?? 0);
       }
     }
 
