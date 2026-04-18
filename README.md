@@ -113,17 +113,18 @@ docker compose up -d       # restart without rebuild
 
 1. Open the app on Sunday after reviewing your portfolio.
 2. Go to **Entries** → **Add Entry**.
-3. Fill in: Date, Total portfolio value, Capital w/o Gain (what you invested), Gain (EUR), Gain %, Free Cash (cash sitting on your brokerage account), and an optional comment.
+3. Fill in: Date, Capital (current portfolio value including unrealised gain), Gain (EUR), Gain %, Free Cash (uninvested cash in your brokerage account), and an optional comment. Total is derived automatically as Capital + Free Cash.
 4. Click **Add Entry**. The dashboard will immediately reflect the new values.
 
 ### Importing historical data
 
 Prepare a `.csv` file with `;` as the delimiter and these columns (header names are case-insensitive):
 
-| Date | Total | Capital w/o Gain | Gain | Gain in % | Comment |
-|------|-------|-----------------|------|-----------|---------|
+| Date | Total | Capital | Gain | Gain in % | Free Cash | Comment |
+|------|-------|---------|------|-----------|-----------|---------|
 
-- `Free Cash` and `Comment` columns are optional.
+- `Total`, `Free Cash`, and `Comment` columns are optional. If `Total` is omitted it is derived as `Capital + Free Cash`.
+- The `Capital` column also accepts the header `Capital w/o Gain` (common broker export name).
 - Dates can be in `YYYY-MM-DD` or `DD.MM.YYYY` format.
 - Numeric values can include a currency prefix and thousands separator (e.g. `€ 8,751.00`, `-€ 286.91`, `10.71%`).
 - Re-importing a file is safe — rows with an existing date are updated, not duplicated.
@@ -141,10 +142,10 @@ Go to **Entries** → **Import CSV**, select your file. A summary toast shows ho
 
 Example rows:
 ```
-Date;Total;Capital w/o Gain;Gain;Gain in %;Comment
-07.01.2024;€ 6,150.75;€ 6,000.50;€ 150.25;2.50%;
-21.01.2024;€ 5,910.20;€ 6,000.50;-€ 90.30;-1.51%;small correction
-19.05.2024;€ 8,405.50;€ 7,500.00;€ 905.50;12.07%;withdrawal of € 500
+Date;Capital;Gain;Gain in %;Free Cash;Comment
+07.01.2024;€ 6,150.75;€ 150.25;2.50%;€ 500.00;
+21.01.2024;€ 5,910.20;-€ 90.30;-1.51%;;small correction
+19.05.2024;€ 8,405.50;€ 905.50;12.07%;;withdrawal of € 500
 ```
 
 ### Editing or deleting an entry
@@ -169,9 +170,9 @@ Visit **Charts** to see:
 | Field | Description |
 |-------|-------------|
 | Date | The Sunday of the weekly check-in |
-| Total | Total portfolio value in EUR |
-| Capital w/o Gain | The amount you have invested (without gain) |
-| Gain | Gain in EUR (can be negative for losses) |
+| Total | Total assets in EUR — derived as Capital + Free Cash |
+| Capital | Current portfolio value in EUR (includes unrealised gain) |
+| Gain | Unrealised gain in EUR (already reflected in Capital; can be negative) |
 | Gain % | Gain as a percentage of capital |
-| Free Cash | Cash available in the brokerage account (optional) |
+| Free Cash | Uninvested cash in the brokerage account (optional) |
 | Comment | Any notes for that week |
