@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/db";
 import { TopBar } from "@/components/layout/TopBar";
 import { KpiCard } from "@/components/dashboard/KpiCard";
