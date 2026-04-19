@@ -73,16 +73,16 @@ export function EntryTable({ entries }: EntryTableProps) {
   return (
     <>
       <div className="overflow-auto rounded-md border">
-        <Table>
+        <Table className="min-w-[480px]">
           <TableHeader>
             <TableRow>
               <TableHead>Date</TableHead>
               <TableHead className="text-right">Total</TableHead>
-              <TableHead className="text-right">Capital</TableHead>
-              <TableHead className="text-right">Gain</TableHead>
+              <TableHead className="hidden md:table-cell text-right">Capital</TableHead>
+              <TableHead className="hidden md:table-cell text-right">Gain</TableHead>
               <TableHead className="text-right">Gain %</TableHead>
-              <TableHead className="text-right">Free Cash</TableHead>
-              <TableHead>Comment</TableHead>
+              <TableHead className="hidden md:table-cell text-right">Free Cash</TableHead>
+              <TableHead className="hidden sm:table-cell">Comment</TableHead>
               <TableHead className="w-20" />
             </TableRow>
           </TableHeader>
@@ -91,8 +91,8 @@ export function EntryTable({ entries }: EntryTableProps) {
               <TableRow key={entry.id}>
                 <TableCell className="font-mono text-sm">{formatDate(entry.date)}</TableCell>
                 <TableCell className="text-right font-mono">{formatEur(entry.total)}</TableCell>
-                <TableCell className="text-right font-mono">{formatEur(entry.capital)}</TableCell>
-                <TableCell className="text-right">
+                <TableCell className="hidden md:table-cell text-right font-mono">{formatEur(entry.capital)}</TableCell>
+                <TableCell className="hidden md:table-cell text-right">
                   <Badge
                     variant="outline"
                     className={
@@ -116,10 +116,10 @@ export function EntryTable({ entries }: EntryTableProps) {
                     {formatPct(entry.gainPct)}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-right font-mono">
+                <TableCell className="hidden md:table-cell text-right font-mono">
                   {entry.freeCash !== null ? formatEur(entry.freeCash) : "—"}
                 </TableCell>
-                <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground">
+                <TableCell className="hidden sm:table-cell max-w-[200px] truncate text-sm text-muted-foreground">
                   {entry.comment ?? ""}
                 </TableCell>
                 <TableCell>

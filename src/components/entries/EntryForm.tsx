@@ -54,7 +54,7 @@ export function EntryForm({ initial, onSubmit, onCancel, isSubmitting }: EntryFo
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1">
           <Label htmlFor="date">Date *</Label>
           <Input id="date" type="date" {...register("date")} />

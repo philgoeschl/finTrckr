@@ -17,7 +17,7 @@ export function KpiCard({ title, value, delta, deltaPositive, subtitle }: KpiCar
         <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+        <div className="text-xl font-bold sm:text-2xl">{value}</div>
         {delta && (
           <Badge
             variant="outline"

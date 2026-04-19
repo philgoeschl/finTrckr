@@ -33,7 +33,7 @@ export function EntryDialog({ open, onOpenChange, entry, onSubmit }: EntryDialog
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="w-[95vw] max-w-lg overflow-y-auto max-h-[90vh]">
         <DialogHeader>
           <DialogTitle>{entry ? "Edit Entry" : "Add Entry"}</DialogTitle>
         </DialogHeader>

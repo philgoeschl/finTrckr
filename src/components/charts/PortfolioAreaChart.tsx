@@ -25,7 +25,7 @@ interface PortfolioAreaChartProps {
 export function PortfolioAreaChart({ data }: PortfolioAreaChartProps) {
   return (
     <ResponsiveContainer width="100%" height={280}>
-      <AreaChart data={data} margin={{ top: 4, right: 16, left: 16, bottom: 0 }}>
+      <AreaChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
         <defs>
           <linearGradient id="totalGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.4} />
@@ -38,7 +38,7 @@ export function PortfolioAreaChart({ data }: PortfolioAreaChartProps) {
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-        <YAxis tickFormatter={(v) => formatEur(v)} tick={{ fontSize: 11 }} width={90} />
+        <YAxis tickFormatter={(v) => formatEur(v)} tick={{ fontSize: 11 }} width={72} />
         <Tooltip formatter={(v, name) => [formatEur(Number(v)), name === "total" ? "Total" : "Capital w/o Gain"]} />
         <Legend formatter={(v) => (v === "total" ? "Total" : "Capital w/o Gain")} />
         <Area

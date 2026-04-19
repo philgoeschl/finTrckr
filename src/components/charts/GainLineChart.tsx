@@ -24,10 +24,10 @@ interface GainLineChartProps {
 export function GainLineChart({ data }: GainLineChartProps) {
   return (
     <ResponsiveContainer width="100%" height={240}>
-      <LineChart data={data} margin={{ top: 4, right: 16, left: 16, bottom: 0 }}>
+      <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-        <YAxis tickFormatter={(v) => formatEur(v)} tick={{ fontSize: 11 }} width={90} />
+        <YAxis tickFormatter={(v) => formatEur(v)} tick={{ fontSize: 11 }} width={72} />
         <Tooltip formatter={(v) => [formatEur(Number(v)), "Gain"]} />
         <ReferenceLine y={0} stroke="var(--muted-foreground)" strokeDasharray="4 4" />
         <Line

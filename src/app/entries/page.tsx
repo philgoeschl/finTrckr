@@ -53,12 +53,12 @@ export default function EntriesPage() {
         onChange={handleImport}
       />
       <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
-        <Upload className="mr-1.5 h-4 w-4" />
-        Import CSV
+        <Upload className="h-4 w-4 sm:mr-1.5" />
+        <span className="hidden sm:inline">Import CSV</span>
       </Button>
       <Button variant="outline" size="sm" onClick={exportCsv}>
-        <Download className="mr-1.5 h-4 w-4" />
-        Export CSV
+        <Download className="h-4 w-4 sm:mr-1.5" />
+        <span className="hidden sm:inline">Export CSV</span>
       </Button>
       <Button size="sm" onClick={() => setAddOpen(true)}>
         <Plus className="mr-1.5 h-4 w-4" />
