@@ -6,7 +6,7 @@ Personal weekly portfolio tracker. Record your stock/ETF portfolio value every S
 
 ## Features
 
-- **Dashboard** — KPI cards (portfolio value, gain, week-over-week delta, free cash) with a sparkline
+- **Dashboard** — KPI cards (portfolio value, gain, week-over-week delta, available cash) with a sparkline
 - **Entries** — Interactive table with add, edit, and delete; sorted by date
 - **Charts** — Portfolio value vs capital, gain in EUR, and gain % over time
 - **CSV import** — Bulk-import historical data from a semicolon-delimited CSV file
@@ -131,18 +131,19 @@ docker compose up -d        # restart without rebuild
 
 1. Open the app on Sunday after reviewing your portfolio.
 2. Go to **Entries** → **Add Entry**.
-3. Fill in the required fields (marked *): **Date**, **Capital** (current portfolio value including unrealised gain; can be negative for leveraged/borrowed positions), **Gain (EUR)**, **Gain %**. Optionally add **Free Cash** (uninvested cash; must be ≥ 0) and a comment. Total is derived automatically as Capital + Free Cash.
+3. Fill in the required fields (marked *): **Date**, **Capital** (current portfolio value including unrealised gain; can be negative for leveraged/borrowed positions), **Gain (EUR)**, **Gain %**. Optionally add **Available Cash** (uninvested cash; must be ≥ 0) and a comment. Total is derived automatically as Capital + Available Cash.
 4. Click **Add Entry**. The dashboard will immediately reflect the new values.
 
 ### Importing historical data
 
 Prepare a `.csv` file with `;` as the delimiter and these columns (header names are case-insensitive):
 
-| Date | Total | Capital | Gain | Gain in % | Free Cash | Comment |
-|------|-------|---------|------|-----------|-----------|---------|
+| Date | Total | Capital | Gain | Gain in % | Available Cash | Comment |
+|------|-------|---------|------|-----------|----------------|---------|
 
-- `Total`, `Free Cash`, and `Comment` columns are optional. If `Total` is omitted it is derived as `Capital + Free Cash`.
-- The `Capital` column also accepts the header `Capital w/o Gain` (common broker export name).
+- `Total`, `Available Cash`, and `Comment` columns are optional. If `Total` is omitted it is derived as `Capital + Available Cash`.
+- The `Capital` column also accepts the headers `Invested Capital`, `Capital w/o Gain`, and `Invested Cash` (legacy broker export names).
+- The `Available Cash` column also accepts the header `Free Cash` (legacy name).
 - Dates can be in `YYYY-MM-DD` or `DD.MM.YYYY` format.
 - Numeric values can include a currency prefix and thousands separator (e.g. `€ 8,751.00`, `-€ 286.91`, `10.71%`).
 - Re-importing a file is safe — rows with an existing date are updated, not duplicated.
@@ -160,7 +161,7 @@ Go to **Entries** → **Import CSV**, select your file. A summary toast shows ho
 
 Example rows:
 ```
-Date;Capital;Gain;Gain in %;Free Cash;Comment
+Date;Capital;Gain;Gain in %;Available Cash;Comment
 07.01.2024;€ 6,150.75;€ 150.25;2.50%;€ 500.00;
 21.01.2024;€ 5,910.20;-€ 90.30;-1.51%;;small correction
 19.05.2024;€ 8,405.50;€ 905.50;12.07%;;withdrawal of € 500
@@ -188,9 +189,9 @@ Visit **Charts** to see:
 | Field | Description |
 |-------|-------------|
 | Date | The Sunday of the weekly check-in |
-| Total | Total assets in EUR — derived as Capital + Free Cash |
+| Total | Total assets in EUR — derived as Capital + Available Cash |
 | Capital | Current portfolio value in EUR (includes unrealised gain); negative for leveraged/borrowed positions. Required. |
 | Gain | Unrealised gain in EUR (already reflected in Capital; can be negative). Required. |
 | Gain % | Gain as a percentage of capital. Required. |
-| Free Cash | Uninvested cash in the brokerage account; must be ≥ 0 (optional) |
+| Available Cash | Uninvested cash in the brokerage account; must be ≥ 0 (optional) |
 | Comment | Any notes for that week |

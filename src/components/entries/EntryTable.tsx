@@ -81,7 +81,7 @@ export function EntryTable({ entries }: EntryTableProps) {
               <TableHead className="hidden md:table-cell text-right">Capital</TableHead>
               <TableHead className="hidden md:table-cell text-right">Gain</TableHead>
               <TableHead className="text-right">Gain %</TableHead>
-              <TableHead className="hidden md:table-cell text-right">Free Cash</TableHead>
+              <TableHead className="hidden md:table-cell text-right">Available Cash</TableHead>
               <TableHead className="hidden sm:table-cell">Comment</TableHead>
               <TableHead className="w-20" />
             </TableRow>

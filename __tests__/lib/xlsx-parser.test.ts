@@ -9,8 +9,8 @@ function makeXlsx(rows: unknown[][]): Uint8Array {
   return XLSX.write(wb, { type: "buffer", bookType: "xlsx" }) as Uint8Array;
 }
 
-const HEADERS = ["Date", "Total", "Capital w/o Gain", "Gain", "Gain in %", "Comment"];
-const HEADERS_WITH_FREE_CASH = ["Date", "Total", "Capital w/o Gain", "Gain", "Gain in %", "Free Cash", "Comment"];
+const HEADERS = ["Date", "Total", "Invested Capital", "Gain", "Gain in %", "Comment"];
+const HEADERS_WITH_AVAILABLE_CASH = ["Date", "Total", "Invested Capital", "Gain", "Gain in %", "Available Cash", "Comment"];
 
 describe("parseXlsx", () => {
   it("parses a valid sheet with all columns", () => {
@@ -26,20 +26,20 @@ describe("parseXlsx", () => {
     expect(result.rows[0].data.comment).toBe("First week");
   });
 
-  it("handles missing Free Cash column gracefully (freeCash is null)", () => {
+  it("handles missing Available Cash column gracefully (freeCash is null)", () => {
     const buf = makeXlsx([
       HEADERS,
-      ["2024-01-07", 10000, 8000, 2000, 25, "no free cash col"],
+      ["2024-01-07", 10000, 8000, 2000, 25, "no available cash col"],
     ]);
     const result = parseXlsx(buf);
     expect(result.errors).toHaveLength(0);
     expect(result.rows[0].data.freeCash).toBeNull();
   });
 
-  it("parses Free Cash column when present", () => {
+  it("parses Available Cash column when present", () => {
     const buf = makeXlsx([
-      HEADERS_WITH_FREE_CASH,
-      ["2024-01-07", 10000, 8000, 2000, 25, 500, "with free cash"],
+      HEADERS_WITH_AVAILABLE_CASH,
+      ["2024-01-07", 10000, 8000, 2000, 25, 500, "with available cash"],
     ]);
     const result = parseXlsx(buf);
     expect(result.errors).toHaveLength(0);

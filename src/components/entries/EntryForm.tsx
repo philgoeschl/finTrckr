@@ -80,7 +80,7 @@ export function EntryForm({ initial, onSubmit, onCancel, isSubmitting }: EntryFo
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="freeCash">Free Cash (EUR, optional)</Label>
+          <Label htmlFor="freeCash">Available Cash (EUR, optional)</Label>
           <Input id="freeCash" type="number" step="0.01" {...register("freeCash")} />
           {errors.freeCash && <p className="text-xs text-destructive">{String(errors.freeCash.message)}</p>}
         </div>

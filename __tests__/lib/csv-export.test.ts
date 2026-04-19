@@ -18,7 +18,7 @@ describe("entriesToCsv", () => {
     const lines = csv.split("\r\n").filter(Boolean);
     expect(lines).toHaveLength(2);
     expect(lines[0]).toContain("Date");
-    expect(lines[0]).toContain("Invested Cash");
+    expect(lines[0]).toContain("Invested Capital");
     expect(lines[0]).toContain("Gain in %");
   });
 

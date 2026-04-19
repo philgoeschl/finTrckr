@@ -26,7 +26,7 @@ function makeRequest(filename: string, csv: string): NextRequest {
   });
 }
 
-const HEADERS = "Date;Total;Capital w/o Gain;Gain;Gain in %;Comment";
+const HEADERS = "Date;Total;Invested Capital;Gain;Gain in %;Comment";
 
 beforeEach(() => {
   vi.clearAllMocks();

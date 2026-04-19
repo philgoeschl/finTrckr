@@ -4,6 +4,7 @@ import { entryInputSchema, EntryInput } from "./validations";
 const COLUMN_MAP: Record<string, keyof EntryInput> = {
   date: "date",
   total: "total",
+  "invested capital": "capital",
   "invested cash": "capital",
   "capital w/o gain": "capital",
   capital: "capital",
@@ -11,6 +12,7 @@ const COLUMN_MAP: Record<string, keyof EntryInput> = {
   "gain in %": "gainPct",
   "gain%": "gainPct",
   gainpct: "gainPct",
+  "available cash": "freeCash",
   "free cash": "freeCash",
   freecash: "freeCash",
   comment: "comment",

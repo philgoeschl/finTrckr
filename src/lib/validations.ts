@@ -19,8 +19,8 @@ export const entryInputSchema = z.object({
   capital: requireNumber("Capital is required"),
   gain: requireNumber("Gain is required"),
   gainPct: requireNumber("Gain % is required"),
-  freeCash: optionalNumber("Free cash must be a number").pipe(
-    z.number().nonnegative("Free cash cannot be negative").nullable().optional()
+  freeCash: optionalNumber("Available cash must be a number").pipe(
+    z.number().nonnegative("Available cash cannot be negative").nullable().optional()
   ),
   total: optionalNumber("Total must be a number"),
   comment: z.string().max(2000).optional().nullable(),

@@ -99,7 +99,7 @@ export default async function DashboardPage() {
             deltaPositive={kpis.wowGainPctDelta !== null ? kpis.wowGainPctDelta >= 0 : undefined}
           />
           <KpiCard
-            title="Free Cash"
+            title="Available Cash"
             value={kpis.latestFreeCash !== null ? formatEur(kpis.latestFreeCash) : "—"}
             subtitle={`${kpis.totalWeeks} week${kpis.totalWeeks !== 1 ? "s" : ""} tracked`}
           />

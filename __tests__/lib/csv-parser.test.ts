@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { parseCsv } from "@/lib/csv-parser";
 
-const H   = "Date;Total;Capital w/o Gain;Gain;Gain in %";
-const HC  = "Date;Total;Capital w/o Gain;Gain;Gain in %;Comment";
-const HFC = "Date;Total;Capital w/o Gain;Gain;Gain in %;Free Cash;Comment";
+const H   = "Date;Total;Invested Capital;Gain;Gain in %";
+const HC  = "Date;Total;Invested Capital;Gain;Gain in %;Comment";
+const HFC = "Date;Total;Invested Capital;Gain;Gain in %;Available Cash;Comment";
 
 describe("parseCsv", () => {
   it("parses a valid CSV with all columns", () => {
@@ -15,14 +15,14 @@ describe("parseCsv", () => {
     expect(result.rows[0].data.comment).toBe("First week");
   });
 
-  it("handles missing Free Cash column gracefully (freeCash is null)", () => {
-    const result = parseCsv(`${HC}\n2024-01-07;10000;8000;2000;25;no free cash col`);
+  it("handles missing Available Cash column gracefully (freeCash is null)", () => {
+    const result = parseCsv(`${HC}\n2024-01-07;10000;8000;2000;25;no available cash col`);
     expect(result.errors).toHaveLength(0);
     expect(result.rows[0].data.freeCash).toBeNull();
   });
 
-  it("parses Free Cash column when present", () => {
-    const result = parseCsv(`${HFC}\n2024-01-07;10000;8000;2000;25;500;with free cash`);
+  it("parses Available Cash column when present", () => {
+    const result = parseCsv(`${HFC}\n2024-01-07;10000;8000;2000;25;500;with available cash`);
     expect(result.errors).toHaveLength(0);
     expect(result.rows[0].data.freeCash).toBe(500);
   });
