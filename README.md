@@ -64,6 +64,14 @@ npx prisma studio
 npm test               # run all tests once
 npm run test:watch     # watch mode
 npm run test:coverage  # with coverage report
+npx tsc --noEmit       # type-check without building
+```
+
+A pre-push git hook runs `tsc --noEmit` automatically and blocks pushes on type errors. It lives at `.git/hooks/pre-push` — set it up on new clones with:
+
+```bash
+cp scripts/pre-push .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
 ```
 
 ---
