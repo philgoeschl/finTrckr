@@ -12,7 +12,7 @@ services:
       db:
         condition: service_healthy
     command: >
-      sh -c "node ./node_modules/prisma/bin/prisma.js migrate deploy && node server.js"
+      sh -c "node ./node_modules/prisma/build/index.js migrate deploy && node server.js"
 
   db:
     image: postgres:16-alpine
