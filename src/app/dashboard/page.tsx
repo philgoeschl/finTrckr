@@ -72,7 +72,7 @@ export default async function DashboardPage() {
       <div className="flex-1 space-y-6 p-6">
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <KpiCard
-            title="Portfolio Value"
+            title="Total"
             value={formatEur(kpis.latestTotal)}
             delta={
               kpis.wowTotalDelta !== null

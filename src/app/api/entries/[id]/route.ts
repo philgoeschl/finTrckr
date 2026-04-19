@@ -27,7 +27,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
   const { date, gain, gainPct, freeCash, comment } = parsed.data;
   const capital = parsed.data.capital ?? 0;
-  const total = parsed.data.total ?? capital + gain;
+  const total = parsed.data.total ?? capital + (freeCash ?? 0);
 
   try {
     const entry = await prisma.entry.update({
