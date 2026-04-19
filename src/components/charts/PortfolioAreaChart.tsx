@@ -39,7 +39,7 @@ export function PortfolioAreaChart({ data }: PortfolioAreaChartProps) {
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="date" tick={{ fontSize: 11 }} />
         <YAxis tickFormatter={(v) => formatEur(v)} tick={{ fontSize: 11 }} width={90} />
-        <Tooltip formatter={(v, name) => [formatEur(Number(v)), name === "total" ? "Total" : "Capital"]} />
+        <Tooltip formatter={(v, name) => [formatEur(Number(v)), name === "total" ? "Total" : "Capital w/o Gain"]} />
         <Legend formatter={(v) => (v === "total" ? "Total" : "Capital w/o Gain")} />
         <Area
           type="monotone"
