@@ -10,6 +10,7 @@ import { DepositChart } from "@/components/charts/DepositChart";
 import { WeeklyReturnHistogram } from "@/components/charts/WeeklyReturnHistogram";
 import { RollingVolatilityChart } from "@/components/charts/RollingVolatilityChart";
 import { formatDate } from "@/lib/utils";
+import { ChartInfoButton } from "@/components/ChartInfoButton";
 import {
   computePeriodReturns,
   computeDrawdownSeries,
@@ -83,10 +84,14 @@ export default async function AnalyticsPage({
       <div className="flex-1 space-y-6 p-6">
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Drawdown — How far below all-time high
             </CardTitle>
+            <ChartInfoButton
+              title="Drawdown"
+              description="How far your portfolio has fallen from its all-time high at each point in time. A value of −10% means the portfolio was 10% below its peak at that moment."
+            />
           </CardHeader>
           <CardContent>
             <DrawdownChart data={drawdownSeries} />
@@ -94,10 +99,14 @@ export default async function AnalyticsPage({
         </Card>
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Portfolio Composition — Invested Capital vs Gain / Loss
             </CardTitle>
+            <ChartInfoButton
+              title="Portfolio Composition"
+              description="Breaks each snapshot into invested capital and unrealised gain or loss. Green bars show gains stacked on top of capital; red bars show losses eating into it."
+            />
           </CardHeader>
           <CardContent>
             <CompositionBarChart data={compositionData} />
@@ -106,10 +115,14 @@ export default async function AnalyticsPage({
 
         {hasDeposits && (
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Deposit & Withdrawal Timeline
               </CardTitle>
+              <ChartInfoButton
+                title="Deposit & Withdrawal Timeline"
+                description="Each bar is a single deposit (positive) or withdrawal (negative), showing how cash flows have shaped your portfolio over time."
+              />
             </CardHeader>
             <CardContent>
               <DepositChart data={depositSeries} />
@@ -118,10 +131,14 @@ export default async function AnalyticsPage({
         )}
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Weekly Return Distribution — Deposit-adjusted
             </CardTitle>
+            <ChartInfoButton
+              title="Weekly Return Distribution"
+              description="Groups all weekly returns into buckets to reveal how often gains or losses of different sizes occur. A distribution centred above zero with a tight spread is healthy."
+            />
           </CardHeader>
           <CardContent>
             <WeeklyReturnHistogram data={histogram} />
@@ -130,10 +147,14 @@ export default async function AnalyticsPage({
 
         {hasRollingVol && (
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Rolling 4-Period Volatility — Annualised
               </CardTitle>
+              <ChartInfoButton
+                title="Rolling 4-Period Volatility"
+                description="How much your weekly returns have varied over a rolling 4-week window, annualised. Higher values mean more volatility and risk."
+              />
             </CardHeader>
             <CardContent>
               <RollingVolatilityChart data={rollingVol} />

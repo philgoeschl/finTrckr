@@ -7,6 +7,7 @@ import { SparklineChart } from "@/components/charts/SparklineChart";
 import { YearFilter } from "@/components/YearFilter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatEur, formatPct, formatDate } from "@/lib/utils";
+import { ChartInfoButton } from "@/components/ChartInfoButton";
 import {
   computePeriodReturns,
   computeCAGR,
@@ -172,10 +173,14 @@ export default async function DashboardPage({
 
         {sparklineData.length > 1 && (
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 {sparklineTitle}
               </CardTitle>
+              <ChartInfoButton
+                title="Portfolio Value"
+                description="Shows how your total portfolio value has evolved over the selected period. Each data point is a weekly snapshot."
+              />
             </CardHeader>
             <CardContent>
               <SparklineChart data={sparklineData} />

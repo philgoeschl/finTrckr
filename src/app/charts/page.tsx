@@ -8,6 +8,7 @@ import { PortfolioAreaChart } from "@/components/charts/PortfolioAreaChart";
 import { GainLineChart } from "@/components/charts/GainLineChart";
 import { GainPctLineChart } from "@/components/charts/GainPctLineChart";
 import { formatDate } from "@/lib/utils";
+import { ChartInfoButton } from "@/components/ChartInfoButton";
 
 async function getAllEntries() {
   return prisma.entry.findMany({ orderBy: { date: "asc" } });
@@ -58,10 +59,14 @@ export default async function ChartsPage({
       <YearFilter years={allYears} selected={selectedYear} />
       <div className="flex-1 space-y-6 p-6">
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Portfolio Value vs Capital
             </CardTitle>
+            <ChartInfoButton
+              title="Portfolio Value vs. Capital"
+              description="Compares your total portfolio value against the capital you have actually invested. The gap between the two areas represents your unrealised gain or loss."
+            />
           </CardHeader>
           <CardContent>
             <PortfolioAreaChart data={data} />
@@ -69,10 +74,14 @@ export default async function ChartsPage({
         </Card>
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Gain (EUR)
             </CardTitle>
+            <ChartInfoButton
+              title="Gain (EUR)"
+              description="Tracks your absolute gain or loss in euros over time, adjusted for deposits and withdrawals. Values above zero are profit; below zero are a loss."
+            />
           </CardHeader>
           <CardContent>
             <GainLineChart data={data} />
@@ -80,10 +89,14 @@ export default async function ChartsPage({
         </Card>
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Gain (%)
             </CardTitle>
+            <ChartInfoButton
+              title="Gain (%)"
+              description="Shows your gain or loss as a percentage of invested capital, deposit-adjusted. Useful for comparing performance regardless of portfolio size."
+            />
           </CardHeader>
           <CardContent>
             <GainPctLineChart data={data} />
