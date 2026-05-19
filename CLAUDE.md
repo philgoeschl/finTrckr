@@ -33,6 +33,8 @@ API routes live in `src/app/api/` alongside the pages — no separate backend pr
 
 `src/lib/validations.ts` is the single source of truth for the `EntryInput` schema; both API route handlers and the `EntryForm` component use it via Zod.
 
+`src/lib/analytics.ts` contains all portfolio metric computations (CAGR, max drawdown, win rate, annualised volatility, drawdown series, deposit series, return histogram, rolling volatility) as pure functions with no side effects. Both the Dashboard page and the Analytics page import from it.
+
 The `prisma/schema.prisma` `Entry` model has a dormant `userId String?` field and commented-out `User` model — the groundwork for adding Better Auth when user management is needed.
 
 ## Testing conventions
@@ -43,6 +45,6 @@ The `prisma/schema.prisma` `Entry` model has a dormant `userId String?` field an
 
 ## Docker
 
-- `docker-compose.yml` — production (build + run)
-- `docker-compose.dev.yml` — dev overrides (hot reload, exposes port 5432)
+- `docker-compose.yml` — production (build + run, app on port 3001)
+- `docker-compose.dev.yml` — dev overrides (hot reload, app on port 3001, DB on port 5433)
 - Start only the DB for local dev: `docker compose -f docker-compose.yml -f docker-compose.dev.yml up db -d`

@@ -6,11 +6,13 @@ Personal weekly portfolio tracker. Record your stock/ETF portfolio value every S
 
 ## Features
 
-- **Dashboard** — KPI cards (portfolio value, gain, week-over-week delta, available cash) with a sparkline
-- **Entries** — Interactive table with add, edit, and delete; sorted by date
-- **Charts** — Portfolio value vs capital, gain in EUR, and gain % over time
+- **Dashboard** — KPI cards (total, gain, CAGR, max drawdown, win rate, annualised volatility, available cash) with a portfolio sparkline; year filter
+- **Entries** — Interactive table with add, edit, and delete; sorted by date; year filter
+- **Charts** — Portfolio value vs capital, gain in EUR, and gain % over time; year filter
+- **Analytics** — Drawdown series, portfolio composition (capital vs gain/loss), deposit & withdrawal timeline, weekly return distribution histogram, and rolling 4-period volatility; year filter
 - **CSV import** — Bulk-import historical data from a semicolon-delimited CSV file
 - **CSV export** — Download all data for use in Excel
+- **Mobile-responsive** — Full layout adapts to phones and tablets
 
 ---
 
@@ -100,7 +102,7 @@ This will:
 1. Build the Next.js app (multi-stage, minimal image)
 2. Start PostgreSQL with a persistent named volume (`fintrckr_pgdata`)
 3. Run `prisma migrate deploy` on first boot
-4. Serve the app at `http://<server-ip>:3000`
+4. Serve the app at `http://<server-ip>:3001`
 
 Data is stored in the `fintrckr_pgdata` Docker volume — it survives restarts and rebuilds.
 
@@ -181,6 +183,32 @@ Visit **Charts** to see:
 - **Portfolio Value vs Capital** — area chart showing total portfolio value and invested capital over time (the gap is your gain)
 - **Gain (EUR)** — how your absolute gain has changed
 - **Gain (%)** — percentage gain over time
+
+### Analytics
+
+Visit **Analytics** for deeper performance metrics:
+- **Drawdown** — how far the portfolio sits below its all-time high at each point in time
+- **Portfolio Composition** — stacked bar chart of invested capital vs unrealised gain (or loss) per week
+- **Deposit & Withdrawal Timeline** — bar chart of capital inflows and outflows (only shown when deposits or withdrawals exist)
+- **Weekly Return Distribution** — histogram of deposit-adjusted weekly returns across six buckets (< −10 % to > +10 %)
+- **Rolling 4-Period Volatility** — annualised standard deviation over a sliding 4-entry window (only shown with enough data)
+
+All pages support a **year filter** in the top bar to narrow data to a single calendar year.
+
+### Dashboard KPIs
+
+The Dashboard shows two rows of metrics for the selected period:
+
+| KPI | Description |
+|-----|-------------|
+| Total | Latest total assets (Capital + Available Cash) |
+| Total Gain | Unrealised gain in EUR and % |
+| Gain % (WoW) | Current gain % vs the previous week |
+| Available Cash | Latest uninvested cash on hand |
+| CAGR | Compound annual growth rate from first to last entry |
+| Max Drawdown | Worst peak-to-trough decline over the period |
+| Win Rate | Share of weeks with a positive deposit-adjusted return |
+| Annualised Vol | Deposit-adjusted return volatility, calendar-scaled |
 
 ---
 

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:full": "docker compose -f docker-compose.yml -f docker-compose.dev.yml up db -d && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
