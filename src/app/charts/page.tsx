@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/db";
 import { TopBar } from "@/components/layout/TopBar";
+import { YearFilter } from "@/components/YearFilter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PortfolioAreaChart } from "@/components/charts/PortfolioAreaChart";
 import { GainLineChart } from "@/components/charts/GainLineChart";
@@ -12,13 +13,28 @@ async function getAllEntries() {
   return prisma.entry.findMany({ orderBy: { date: "asc" } });
 }
 
-export default async function ChartsPage() {
-  const entries = await getAllEntries();
+export default async function ChartsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ year?: string }>;
+}) {
+  const { year } = await searchParams;
+  const selectedYear = year ? parseInt(year) || null : null;
+
+  const allEntries = await getAllEntries();
+  const allYears = [...new Set(allEntries.map((e) => new Date(e.date).getFullYear()))].sort(
+    (a, b) => b - a
+  );
+
+  const entries = selectedYear
+    ? allEntries.filter((e) => new Date(e.date).getFullYear() === selectedYear)
+    : allEntries;
 
   if (entries.length < 2) {
     return (
       <div className="flex flex-1 flex-col">
         <TopBar title="Charts" />
+        <YearFilter years={allYears} selected={selectedYear} />
         <div className="flex flex-1 items-center justify-center">
           <p className="text-muted-foreground">
             Add at least two entries to see charts.
@@ -39,6 +55,7 @@ export default async function ChartsPage() {
   return (
     <div className="flex flex-1 flex-col">
       <TopBar title="Charts" />
+      <YearFilter years={allYears} selected={selectedYear} />
       <div className="flex-1 space-y-6 p-6">
         <Card>
           <CardHeader>

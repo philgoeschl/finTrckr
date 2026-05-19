@@ -1,19 +1,30 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Plus, Upload, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TopBar } from "@/components/layout/TopBar";
 import { EntryTable } from "@/components/entries/EntryTable";
 import { EntryDialog } from "@/components/entries/EntryDialog";
+import { YearFilter } from "@/components/YearFilter";
 import { useEntries, createEntry, importCsv, exportCsv } from "@/hooks/useEntries";
 import { EntryInput } from "@/lib/validations";
 import { toast } from "sonner";
 
 export default function EntriesPage() {
   const { entries, isLoading } = useEntries();
+  const searchParams = useSearchParams();
   const [addOpen, setAddOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const selectedYear = searchParams.get("year") ? parseInt(searchParams.get("year")!) || null : null;
+  const allYears = [...new Set(entries.map((e) => parseInt(e.date.substring(0, 4))))].sort(
+    (a, b) => b - a
+  );
+  const filtered = selectedYear
+    ? entries.filter((e) => parseInt(e.date.substring(0, 4)) === selectedYear)
+    : entries;
 
   async function handleCreate(data: EntryInput) {
     try {
@@ -70,13 +81,14 @@ export default function EntriesPage() {
   return (
     <div className="flex flex-1 flex-col">
       <TopBar title="Entries" actions={actions} />
+      <YearFilter years={allYears} selected={selectedYear} />
       <div className="flex-1 p-6">
         {isLoading ? (
           <div className="flex items-center justify-center py-16 text-muted-foreground">
             Loading…
           </div>
         ) : (
-          <EntryTable entries={entries} />
+          <EntryTable entries={filtered} />
         )}
       </div>
 

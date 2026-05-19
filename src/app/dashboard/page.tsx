@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { TopBar } from "@/components/layout/TopBar";
 import { KpiCard } from "@/components/dashboard/KpiCard";
 import { SparklineChart } from "@/components/charts/SparklineChart";
+import { YearFilter } from "@/components/YearFilter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatEur, formatPct, formatDate } from "@/lib/utils";
 import {
@@ -57,23 +58,39 @@ function computeKpis(entries: Awaited<ReturnType<typeof getEntries>>) {
   };
 }
 
-export default async function DashboardPage() {
-  const entries = await getEntries();
-  const kpis = computeKpis(entries);
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ year?: string }>;
+}) {
+  const { year } = await searchParams;
+  const selectedYear = year ? parseInt(year) || null : null;
 
-  // Last 12 weeks for sparkline (ascending order)
-  const sparklineData = entries
-    .slice(0, 12)
-    .reverse()
-    .map((e) => ({
-      date: formatDate(e.date),
-      total: Number(e.total),
-    }));
+  const entries = await getEntries();
+  const allYears = [...new Set(entries.map((e) => new Date(e.date).getFullYear()))].sort(
+    (a, b) => b - a
+  );
+
+  const filtered = selectedYear
+    ? entries.filter((e) => new Date(e.date).getFullYear() === selectedYear)
+    : entries;
+
+  const kpis = computeKpis(filtered);
+
+  const sparklineSource = selectedYear ? filtered.slice().reverse() : entries.slice(0, 12).reverse();
+  const sparklineData = sparklineSource.map((e) => ({
+    date: formatDate(e.date),
+    total: Number(e.total),
+  }));
+  const sparklineTitle = selectedYear
+    ? `Portfolio Value — ${selectedYear}`
+    : `Portfolio Value — Last ${sparklineData.length} Weeks`;
 
   if (!kpis) {
     return (
       <div className="flex flex-1 flex-col">
         <TopBar title="Dashboard" />
+        <YearFilter years={allYears} selected={selectedYear} />
         <div className="flex flex-1 items-center justify-center">
           <p className="text-muted-foreground">
             No data yet. Add your first entry in the{" "}
@@ -90,6 +107,7 @@ export default async function DashboardPage() {
   return (
     <div className="flex flex-1 flex-col">
       <TopBar title="Dashboard" />
+      <YearFilter years={allYears} selected={selectedYear} />
       <div className="flex-1 space-y-6 p-6">
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <KpiCard
@@ -156,7 +174,7 @@ export default async function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Portfolio Value — Last {sparklineData.length} Weeks
+                {sparklineTitle}
               </CardTitle>
             </CardHeader>
             <CardContent>
