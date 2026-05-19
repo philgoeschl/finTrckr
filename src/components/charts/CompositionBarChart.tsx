@@ -24,9 +24,22 @@ interface CompositionBarChartProps {
 }
 
 export function CompositionBarChart({ data }: CompositionBarChartProps) {
+  const chartData = data.map((d) => ({
+    date: d.date,
+    base: d.capital + Math.min(0, d.gain),
+    gainBar: Math.max(0, d.gain),
+    lossBar: Math.max(0, -d.gain),
+  }));
+
+  const labelMap: Record<string, string> = {
+    base: "Invested Capital",
+    gainBar: "Gain",
+    lossBar: "Loss",
+  };
+
   return (
     <ResponsiveContainer width="100%" height={280}>
-      <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+      <BarChart data={chartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="date" tick={{ fontSize: 11 }} />
         <YAxis
@@ -37,17 +50,14 @@ export function CompositionBarChart({ data }: CompositionBarChartProps) {
         <Tooltip
           formatter={(v, name) => [
             formatEur(Number(v)),
-            name === "capital" ? "Invested Capital" : "Gain / Loss",
+            labelMap[name as string] ?? name,
           ]}
         />
-        <Legend
-          formatter={(v) =>
-            v === "capital" ? "Invested Capital" : "Gain / Loss"
-          }
-        />
+        <Legend formatter={(v) => labelMap[v] ?? v} />
         <ReferenceLine y={0} stroke="var(--muted-foreground)" />
-        <Bar dataKey="capital" stackId="a" fill="var(--chart-2)" radius={0} />
-        <Bar dataKey="gain" stackId="a" fill="var(--chart-1)" radius={[3, 3, 0, 0]} />
+        <Bar dataKey="base" stackId="a" fill="var(--chart-2)" radius={0} />
+        <Bar dataKey="gainBar" stackId="a" fill="var(--chart-3)" radius={[3, 3, 0, 0]} />
+        <Bar dataKey="lossBar" stackId="a" fill="var(--destructive)" radius={[3, 3, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
