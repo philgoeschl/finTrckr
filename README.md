@@ -53,6 +53,8 @@ npx prisma migrate dev
 npm run dev
 ```
 
+After the first setup, `npm run dev:full` starts the DB container and the dev server in one shot (skips the migration step).
+
 To inspect data visually:
 ```bash
 npx prisma studio

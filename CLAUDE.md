@@ -17,6 +17,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run dev          # start dev server (Turbopack)
+npm run dev:full     # start DB container + dev server in one shot (post-setup)
 npm run build        # production build
 npm test             # run all tests
 npm run test:watch   # watch mode
