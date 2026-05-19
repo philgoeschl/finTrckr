@@ -121,12 +121,14 @@ export default async function DashboardPage({
             }
             deltaPositive={kpis.wowTotalDelta !== null ? kpis.wowTotalDelta >= 0 : undefined}
             subtitle={`As of ${kpis.latestDate}`}
+            description="Current total market value of your portfolio as of the latest entry. The delta shows the change versus the previous week."
           />
           <KpiCard
             title="Total Gain"
             value={formatEur(kpis.latestGain)}
             delta={formatPct(kpis.latestGainPct)}
             deltaPositive={kpis.latestGain >= 0}
+            description="The difference between your portfolio's current value and the total capital you have invested, in euros."
           />
           <KpiCard
             title="Gain % (WoW)"
@@ -137,11 +139,13 @@ export default async function DashboardPage({
                 : undefined
             }
             deltaPositive={kpis.wowGainPctDelta !== null ? kpis.wowGainPctDelta >= 0 : undefined}
+            description="Unrealised gain or loss as a percentage of invested capital. The delta shows the change versus the previous week."
           />
           <KpiCard
             title="Available Cash"
             value={kpis.latestFreeCash !== null ? formatEur(kpis.latestFreeCash) : "—"}
             subtitle={`${kpis.totalWeeks} week${kpis.totalWeeks !== 1 ? "s" : ""} tracked`}
+            description="Free cash held in your portfolio that is not currently invested in any position."
           />
         </div>
 
@@ -151,23 +155,27 @@ export default async function DashboardPage({
             value={kpis.cagr !== null ? formatPct(kpis.cagr * 100) : "—"}
             subtitle="Compound annual growth rate"
             deltaPositive={kpis.cagr !== null ? kpis.cagr >= 0 : undefined}
+            description="Compound Annual Growth Rate — the constant annual return that would take your portfolio from its starting value to its current value over the full tracked period."
           />
           <KpiCard
             title="Max Drawdown"
             value={kpis.maxDrawdown !== null ? formatPct(kpis.maxDrawdown * 100) : "—"}
             subtitle="Worst peak-to-trough decline"
             deltaPositive={false}
+            description="The largest peak-to-trough decline in portfolio value across the entire tracked period. Measures the worst loss you would have suffered if you bought at a high and sold at the subsequent low."
           />
           <KpiCard
             title="Win Rate"
             value={kpis.winRate !== null ? formatPct(kpis.winRate * 100) : "—"}
             subtitle="Periods with positive return"
             deltaPositive={kpis.winRate !== null ? kpis.winRate >= 0.5 : undefined}
+            description="The share of weekly periods where your deposit-adjusted return was positive. Above 50% means you gained more often than you lost."
           />
           <KpiCard
             title="Annualised Vol"
             value={kpis.annualisedVol !== null ? formatPct(kpis.annualisedVol * 100) : "—"}
             subtitle="Deposit-adjusted, calendar-scaled"
+            description="How much your weekly deposit-adjusted returns vary, scaled to a full year. Higher values indicate greater uncertainty and risk in your returns."
           />
         </div>
 
