@@ -6,6 +6,13 @@ import { KpiCard } from "@/components/dashboard/KpiCard";
 import { SparklineChart } from "@/components/charts/SparklineChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatEur, formatPct, formatDate } from "@/lib/utils";
+import {
+  computePeriodReturns,
+  computeCAGR,
+  computeMaxDrawdown,
+  computeWinRate,
+  computeAnnualisedVolatility,
+} from "@/lib/analytics";
 
 async function getEntries() {
   return prisma.entry.findMany({ orderBy: { date: "desc" } });
@@ -24,6 +31,16 @@ function computeKpis(entries: Awaited<ReturnType<typeof getEntries>>) {
     ? Number(latest.gainPct) - Number(previous.gainPct)
     : null;
 
+  const analyticsEntries = entries.map((e) => ({
+    date: formatDate(e.date),
+    total: Number(e.total),
+    capital: Number(e.capital),
+    gain: Number(e.gain),
+    gainPct: Number(e.gainPct),
+  }));
+
+  const periodReturns = computePeriodReturns(analyticsEntries);
+
   return {
     latestTotal: Number(latest.total),
     latestGain: Number(latest.gain),
@@ -33,6 +50,10 @@ function computeKpis(entries: Awaited<ReturnType<typeof getEntries>>) {
     wowTotalDelta,
     wowGainPctDelta,
     totalWeeks: entries.length,
+    cagr: computeCAGR(analyticsEntries),
+    maxDrawdown: computeMaxDrawdown(analyticsEntries),
+    winRate: computeWinRate(periodReturns),
+    annualisedVol: computeAnnualisedVolatility(periodReturns),
   };
 }
 
@@ -102,6 +123,32 @@ export default async function DashboardPage() {
             title="Available Cash"
             value={kpis.latestFreeCash !== null ? formatEur(kpis.latestFreeCash) : "—"}
             subtitle={`${kpis.totalWeeks} week${kpis.totalWeeks !== 1 ? "s" : ""} tracked`}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <KpiCard
+            title="CAGR"
+            value={kpis.cagr !== null ? formatPct(kpis.cagr * 100) : "—"}
+            subtitle="Compound annual growth rate"
+            deltaPositive={kpis.cagr !== null ? kpis.cagr >= 0 : undefined}
+          />
+          <KpiCard
+            title="Max Drawdown"
+            value={kpis.maxDrawdown !== null ? formatPct(kpis.maxDrawdown * 100) : "—"}
+            subtitle="Worst peak-to-trough decline"
+            deltaPositive={false}
+          />
+          <KpiCard
+            title="Win Rate"
+            value={kpis.winRate !== null ? formatPct(kpis.winRate * 100) : "—"}
+            subtitle="Periods with positive return"
+            deltaPositive={kpis.winRate !== null ? kpis.winRate >= 0.5 : undefined}
+          />
+          <KpiCard
+            title="Annualised Vol"
+            value={kpis.annualisedVol !== null ? formatPct(kpis.annualisedVol * 100) : "—"}
+            subtitle="Deposit-adjusted, calendar-scaled"
           />
         </div>
 

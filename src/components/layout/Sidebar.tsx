@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, List, LineChart, TrendingUp } from "lucide-react";
+import { LayoutDashboard, List, LineChart, TrendingUp, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/entries", label: "Entries", icon: List },
   { href: "/charts", label: "Charts", icon: LineChart },
+  { href: "/analytics", label: "Analytics", icon: BarChart3 },
 ];
 
 interface SidebarProps {
