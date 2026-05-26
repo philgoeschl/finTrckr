@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus, Upload, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import { useEntries, createEntry, importCsv, exportCsv } from "@/hooks/useEntrie
 import { EntryInput } from "@/lib/validations";
 import { toast } from "sonner";
 
-export default function EntriesPage() {
+function EntriesContent() {
   const { entries, isLoading } = useEntries();
   const searchParams = useSearchParams();
   const [addOpen, setAddOpen] = useState(false);
@@ -94,5 +94,13 @@ export default function EntriesPage() {
 
       <EntryDialog open={addOpen} onOpenChange={setAddOpen} onSubmit={handleCreate} />
     </div>
+  );
+}
+
+export default function EntriesPage() {
+  return (
+    <Suspense>
+      <EntriesContent />
+    </Suspense>
   );
 }
